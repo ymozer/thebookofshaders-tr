@@ -1,42 +1,42 @@
-## Hello World
+## Merhaba Dünya
 
-Usually the "Hello world!" example is the first step to learning a new language. It's a simple one-line program that outputs an enthusiastic welcoming message and declares opportunities ahead.
+Genellikle yeni bir dil öğrenirken ilk adım "Merhaba Dünya!" örneğini yazmaktır. Bu, coşkulu bir karşılama mesajı verir ve önümüzdeki fırsatları belirtir.
 
-In GPU-land rendering text is an overcomplicated task for a first step, instead we'll choose a bright welcoming color to shout our enthusiasm!
+Ekran kartı dünyasında ise metin çizdirmek ilk adım için gereğinden karmaşık bir görevdir. Bunun yerine, coşkumuzu belirtmek için parlak bir renk seçeceğiz!
 
 <div class="codeAndCanvas" data="hello_world.frag"></div>
 
-If you are reading this book in a browser the previous block of code is interactive. That means you can click and change any part of the code you want to explore. Changes will be updated immediately thanks to the GPU architecture that compiles and replaces shaders *on the fly*. Give it a try by changing the values on line 8.
+Eğer bu kitabı bir tarayıcıda okuyorsanız, yukarıdaki kod bloğu etkileşimlidir. Yani keşfetmek istediğiniz herhangi bir kod parçasını tıklayarak değiştirebilirsiniz. Değişiklikler hemen güncellenecektir, çünkü GPU mimarisi *canlı* olarak shader'ları derler ve değiştirir. Denemek için 8. satırdaki değerleri değiştirin.
 
-Although these simple lines of code don't look like a lot, we can infer substantial knowledge from them:
+Bu birkaç satır kod basit görünse de, onlardan önemli bilgiler çıkarabiliriz:
 
-1. Shader Language has a single `main` function that returns a color at the end. This is similar to C.
+1. Shader Dili, sonunda bir renk döndüren tek bir `main` fonksiyonuna sahiptir. Bu, C diline benzer.
 
-2. The final pixel color is assigned to the reserved global variable `gl_FragColor`.
+2. Son piksel rengi, rezerve edilmiş global bir değişken olan `gl_FragColor`'a atanır.
 
-3. This C-flavored language has built in *variables* (like `gl_FragColor`), *functions* and *types*. In this case we've just been introduced to `vec4` that stands for a four dimensional vector of floating point precision. Later we will see more types like `vec3` and `vec2` together with the popular: `float`, `int` and `bool`.
+3. Bu C diline benzer bir dilin içinde *değişkenler* (örneğin `gl_FragColor`), *fonksiyonlar* ve *türler* bulunur. Bu örnekte `vec4` ile tanıştık. Bu, dört boyutlu bir kayan nokta (floating point) vektörünü temsil eder. Daha sonra `vec3` ve `vec2` gibi diğer türleri de göreceğiz. Ayrıca `float`, `int` ve `bool` gibi popüler türler de göreceğiz.
 
-4. If we look closely to the `vec4` type we can infer that the four arguments respond to the RED, GREEN, BLUE and ALPHA channels. Also we can see that these values are *normalized*, which means they go from `0.0` to `1.0`. Later, we will learn how normalizing values makes it easier to *map* values between variables.
+4. `vec4` türüne dikkatlice bakarsak, dört argümanın KIRMIZI, YEŞİL, MAVİ ve ALFA kanallarına karşılık geldiğini çıkarabiliriz. Ayrıca bu değerlerin *normalize* olduğunu görebiliriz, yani `0.0` ile `1.0` arasında değişirler. Daha sonra, değerleri değişkenler arasında *haritalamayı (mapping)* kolaylaştırdığı için nasıl normalize edildiğini öğreneceğiz.
 
-5. Another important *C feature* we can see in this example is the presence of preprocessor macros. Macros are part of a pre-compilation step. With them it is possible to `#define` global variables and do some basic conditional operation (with `#ifdef` and `#endif`). All the macro commands begin with a hashtag (`#`). Pre-compilation happens right before compiling and copies all the calls to `#defines` and check `#ifdef` (is defined) and `#ifndef` (is not defined) conditionals. In our "hello world!" example above, we only insert the line 2 if `GL_ES` is defined, which mostly happens when the code is compiled on mobile devices and browsers.
+5. Diğer önemli bir *C özelliği* ise önişlemci makroların varlığıdır. Makrolar, ön derleme adımının bir parçasıdır. Onlarla global değişkenleri `#define` edebilir ve bazı temel koşullu işlemler yapabiliriz (`#ifdef` ve `#endif` ile). Tüm makro komutları bir hashtag (`#`) ile başlar. Ön derleme, derlemeden hemen önce gerçekleşir ve tüm `#define` çağrılarını kopyalar, `#ifdef` (tanımlı) ve `#ifndef` (tanımlı değil) koşullu işlemleri kontrol eder. Yukarıdaki "Merhaba Dünya!" örneğimizde, sadece `GL_ES` tanımlıysa 2. satırı ekleriz, ki bu genellikle kod mobil cihazlarda ve tarayıcılarda derlendiğinde gerçekleşir.
 
-6. Float types are vital in shaders, so the level of *precision* is crucial. Lower precision means faster rendering, but at the cost of quality. You can be picky and specify the precision of each variable that uses floating point. In the second line (`precision mediump float;`) we are setting all floats to medium precision. But we can choose to set them to low (`precision lowp float;`) or high (`precision highp float;`).
+6. Shader'larda float tipleri hayati öneme sahiptir, bu yüzden *hassasiyet* seviyesi kritiktir. Düşük hassasiyet, hızlı render etmek anlamına gelir, ancak kaliteyi düşürür. Her bir kayan nokta kullanan değişkenin hassasiyetini belirtmek için seçici olabilirsiniz. İkinci satırda (`precision mediump float;`) tüm float'ları orta hassasiyete ayarlıyoruz. Ancak onları düşük (`precision lowp float;`) veya yüksek (`precision highp float;`) hassasiyete ayarlamayı seçebiliriz.
 
-7. The last, and maybe most important, detail is that GLSL specs don’t guarantee that variables will be automatically casted. What does that mean? Manufacturers have different approaches to accelerate graphics card processes but they are forced to guarantee minimum specs. Automatic casting is not one of them. In our “hello world!” example `vec4` has floating point precision and for that it expects to be assigned with `floats`. If you want to make good consistent code and not spend hours debugging white screens, get used to putting the point (`.`) in your floats. This kind of code will not always work:
+7. Son ve belki de en önemli detay, GLSL spesifikasyonlarının değişkenlerin otomatik olarak dönüştürüleceğini garanti etmemesidir. Bu ne anlama geliyor? Üreticiler grafik kartı işlemlerini hızlandırmak için farklı yaklaşımlara sahiptir, ancak minimum spesifikasyonları garanti etmek zorundadırlar. Otomatik dönüştürme bunlardan biri değildir. "hello world!" örneğimizde `vec4` kayan nokta hassasiyetine sahiptir ve bu yüzden `float`'lar ile atanmasını bekler. İyi ve tutarlı kod yazmak ve saatlerce beyaz ekranları hata ayıklamak istemiyorsanız, kayan noktalarda nokta (`.`) koymaya alışın. Bu tür kod her zaman çalışmayacaktır:
 
 ```glsl
 void main() {
-    gl_FragColor = vec4(1,0,0,1);	// ERROR
+    gl_FragColor = vec4(1,0,0,1);	// HATA
 }
 ```
 
-Now that we've described the most relevant elements of our "hello world!" program, it's time to click on the code block and start challenging all that we've learned. You will note that on errors, the program will fail to compile, showing a white screen. There are some interesting things to try, for example:
+Şimdi "Merhaba Dünya!" programımızın en ilgili unsurlarını tanımladığımıza göre, kod bloğuna tıklayarak öğrendiklerimizi sorgulamaya başlama zamanı geldi. Hata durumunda program derlenmeyecektir ve beyaz bir ekran göreceksiniz. Örneğin şunları denemek ilginç olabilir:
 
-* Try replacing the floats with integers, your graphic card may or may not tolerate this behavior.
+* Float'ları tam sayılarla değiştirmeyi deneyin, grafik kartınız bu davranışı tolere edebilir de etmeyebilir de.
 
-* Try commenting out line 8 and not assigning any pixel value to the function.
+*  8. satırı yorum satırı yapın ve fonksiyona herhangi bir piksel değeri atamayın.
 
-* Try making a separate function that returns a specific color and use it inside `main()`. As a hint, here is the code for a function that returns a red color:
+* Spesifik bir renk döndüren ayrı bir fonksiyon yapmayı deneyin ve onu `main()` fonksiyonu içinde kullanın. İşte size kırmızı bir renk döndüren bir fonksiyon:
 
 ```glsl
 vec4 red(){
@@ -44,10 +44,10 @@ vec4 red(){
 }
 ```
 
-* There are multiple ways of constructing `vec4` types, try to discover other ways. The following is one of them:
+* `vec4` türlerini oluşturmanın birden fazla yolu vardır (Bkz. [Swizzling](https://en.wikipedia.org/wiki/Swizzling_(computer_graphics))). Diğer yolları keşfetmeye çalışın. Aşağıdaki bu yollardan biridir:
 
 ```glsl
 vec4 color = vec4(vec3(1.0,0.0,1.0),1.0);
 ```
 
-Although this example isn't very exciting, it is the most basic example - we are changing all the pixels inside the canvas to the same exact color. In the following chapter we will see how to change the pixel colors by using two types of input: space (the place of the pixel on the screen) and time (the number of seconds since the page was loaded).
+* Bu örnek çok heyecan verici olmasa da, en temel örnektir. Tüm pikselleri tuvalin içinde aynı renge dönüştürüyoruz... Bir sonraki bölümde, piksel renklerini ekrandaki yer (uzay) ve zaman (sayfanın yüklenmesinden bu yana geçen saniye sayısı) kullanarak nasıl değiştireceğimizi göreceğiz.
